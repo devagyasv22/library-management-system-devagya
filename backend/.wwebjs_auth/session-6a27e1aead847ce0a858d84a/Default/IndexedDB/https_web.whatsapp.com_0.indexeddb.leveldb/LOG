@@ -1,3 +1,20 @@
-2026/06/10-12:15:44.335 2483de Reusing MANIFEST /Users/rahulsharma/Desktop/untitled folder 2/library-management-system/backend/.wwebjs_auth/session-6a27e1aead847ce0a858d84a/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/06/10-12:15:44.335 2483de Recovering log #76
-2026/06/10-12:15:44.393 2483de Reusing old log /Users/rahulsharma/Desktop/untitled folder 2/library-management-system/backend/.wwebjs_auth/session-6a27e1aead847ce0a858d84a/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000076.log 
+2026/06/10-12:21:43.720 249ea8 Reusing MANIFEST /Users/rahulsharma/Desktop/untitled folder 2/library-management-system/backend/.wwebjs_auth/session-6a27e1aead847ce0a858d84a/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/06/10-12:21:43.721 249ea8 Recovering log #76
+2026/06/10-12:21:43.817 249ea8 Reusing old log /Users/rahulsharma/Desktop/untitled folder 2/library-management-system/backend/.wwebjs_auth/session-6a27e1aead847ce0a858d84a/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000076.log 
+2026/06/10-12:21:44.475 249eab Level-0 table #85: started
+2026/06/10-12:21:44.505 249eab Level-0 table #85: 1099384 bytes OK
+2026/06/10-12:21:44.513 249eab Delete type=0 #76
+2026/06/10-12:21:45.011 249eab Compacting 1@1 + 5@2 files
+2026/06/10-12:21:45.057 249eab Generated table #86@1: 39912 keys, 2198782 bytes
+2026/06/10-12:21:45.086 249eab Generated table #87@1: 10370 keys, 2160280 bytes
+2026/06/10-12:21:45.129 249eab Generated table #88@1: 61946 keys, 2199891 bytes
+2026/06/10-12:21:45.188 249eab Generated table #89@1: 95873 keys, 2247094 bytes
+2026/06/10-12:21:45.195 249eab Generated table #90@1: 11388 keys, 348537 bytes
+2026/06/10-12:21:45.196 249eab Compacted 1@1 + 5@2 files => 9154584 bytes
+2026/06/10-12:21:45.198 249eab compacted to: files[ 0 0 5 0 0 0 0 ]
+2026/06/10-12:21:45.198 249eab Delete type=2 #80
+2026/06/10-12:21:45.198 249eab Delete type=2 #81
+2026/06/10-12:21:45.198 249eab Delete type=2 #82
+2026/06/10-12:21:45.198 249eab Delete type=2 #79
+2026/06/10-12:21:45.198 249eab Delete type=2 #78
+2026/06/10-12:21:45.198 249eab Delete type=2 #85

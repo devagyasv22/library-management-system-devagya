@@ -18,7 +18,7 @@ const initializeClient = (libraryId) => {
     const client = new Client({
         authStrategy: new LocalAuth({ clientId: libraryId.toString() }), 
         puppeteer: {
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || (os.platform() === 'darwin' ? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' : '/usr/bin/google-chrome-stable'),
+            ...(os.platform() === 'darwin' ? { executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' } : process.env.PUPPETEER_EXECUTABLE_PATH ? { executablePath: process.env.PUPPETEER_EXECUTABLE_PATH } : {}),
             args: [
                 '--no-sandbox', 
                 '--disable-setuid-sandbox', 
