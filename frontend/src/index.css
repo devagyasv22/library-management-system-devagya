@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .glass {
+    @apply bg-white/20 backdrop-blur-lg border border-white/30 shadow-lg;
+  }
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
+}
