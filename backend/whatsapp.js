@@ -8,70 +8,100 @@ const { Library, User, Attendance } = require('./models.js');
 const clients = new Map();
 const qrCodes = new Map();
 const readyStatuses = new Map();
+const initializingSet = new Set(); // Prevent double-init
 
 // Helper to initialize client for a specific library
-const initializeClient = (libraryId) => {
-    if (clients.has(libraryId)) return; // Already initializing/initialized
+const initializeClient = async (libraryId) => {
+    if (clients.has(libraryId) || initializingSet.has(libraryId)) return;
+    initializingSet.add(libraryId);
 
     console.log(`Initializing WhatsApp Client for library: ${libraryId}`);
     
-    const client = new Client({
-        authStrategy: new LocalAuth({ clientId: libraryId.toString() }), 
-        puppeteer: {
-            ...(os.platform() === 'darwin' ? { executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' } : process.env.PUPPETEER_EXECUTABLE_PATH ? { executablePath: process.env.PUPPETEER_EXECUTABLE_PATH } : {}),
-            args: [
-                '--no-sandbox', 
-                '--disable-setuid-sandbox', 
-                '--disable-dev-shm-usage', 
-                '--disable-accelerated-2d-canvas', 
-                '--no-first-run', 
-                '--no-zygote', 
-                '--single-process', 
-                '--disable-gpu'
-            ] 
-        }
-    });
+    try {
+        const client = new Client({
+            authStrategy: new LocalAuth({ clientId: libraryId.toString() }), 
+            puppeteer: {
+                ...(os.platform() === 'darwin' 
+                    ? { executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' } 
+                    : process.env.PUPPETEER_EXECUTABLE_PATH 
+                        ? { executablePath: process.env.PUPPETEER_EXECUTABLE_PATH } 
+                        : {}),
+                headless: true,
+                args: [
+                    '--no-sandbox', 
+                    '--disable-setuid-sandbox', 
+                    '--disable-dev-shm-usage', 
+                    '--disable-accelerated-2d-canvas', 
+                    '--no-first-run', 
+                    '--no-zygote', 
+                    '--single-process', 
+                    '--disable-gpu',
+                    '--disable-extensions',
+                    '--disable-background-networking',
+                    '--disable-default-apps',
+                    '--disable-sync',
+                    '--disable-translate',
+                    '--metrics-recording-only',
+                    '--mute-audio',
+                    '--no-default-browser-check',
+                    '--js-flags=--max-old-space-size=128'
+                ] 
+            }
+        });
 
-    readyStatuses.set(libraryId, false);
-    qrCodes.set(libraryId, '');
-    clients.set(libraryId, client);
-
-    client.on('qr', (qr) => {
-        console.log(`[Library ${libraryId}] WhatsApp QR Code generated`);
-        qrCodes.set(libraryId, qr);
-        readyStatuses.set(libraryId, false);
-    });
-
-    client.on('ready', () => {
-        console.log(`✅ [Library ${libraryId}] WhatsApp is ready and connected!`);
-        readyStatuses.set(libraryId, true);
-        qrCodes.set(libraryId, '');
-    });
-
-    client.on('disconnected', (reason) => {
-        console.log(`[Library ${libraryId}] Client was logged out`, reason);
         readyStatuses.set(libraryId, false);
         qrCodes.set(libraryId, '');
-        client.initialize();
-    });
+        clients.set(libraryId, client);
 
-    client.on('auth_failure', msg => {
-        console.error(`[Library ${libraryId}] Authentication failure:`, msg);
-    });
+        client.on('qr', (qr) => {
+            console.log(`[Library ${libraryId}] WhatsApp QR Code generated`);
+            qrCodes.set(libraryId, qr);
+            readyStatuses.set(libraryId, false);
+        });
 
-    client.initialize();
+        client.on('ready', () => {
+            console.log(`✅ [Library ${libraryId}] WhatsApp is ready and connected!`);
+            readyStatuses.set(libraryId, true);
+            qrCodes.set(libraryId, '');
+        });
+
+        client.on('disconnected', (reason) => {
+            console.log(`[Library ${libraryId}] Client was logged out`, reason);
+            readyStatuses.set(libraryId, false);
+            qrCodes.set(libraryId, '');
+            clients.delete(libraryId);
+            initializingSet.delete(libraryId);
+        });
+
+        client.on('auth_failure', msg => {
+            console.error(`[Library ${libraryId}] Authentication failure:`, msg);
+            clients.delete(libraryId);
+            initializingSet.delete(libraryId);
+        });
+
+        await client.initialize();
+    } catch (err) {
+        console.error(`[Library ${libraryId}] Failed to initialize WhatsApp:`, err.message);
+        clients.delete(libraryId);
+        initializingSet.delete(libraryId);
+    }
 };
 
+// NOTE: Does NOT auto-initialize. Admin must explicitly click "Connect WhatsApp".
 const getWhatsAppStatus = (libraryId) => {
-    // If not initialized, start it on-demand
-    if (!clients.has(libraryId)) {
-        initializeClient(libraryId);
-    }
-    
     return {
         ready: readyStatuses.get(libraryId) || false,
-        qr: qrCodes.get(libraryId) || ''
+        qr: qrCodes.get(libraryId) || '',
+        initialized: clients.has(libraryId)
     };
+};
+
+// Explicit connect - admin clicks "Connect" button
+const connectWhatsApp = async (libraryId) => {
+    if (!clients.has(libraryId)) {
+        await initializeClient(libraryId);
+    }
+    return getWhatsAppStatus(libraryId);
 };
 
 const logoutWhatsApp = async (libraryId) => {
@@ -79,18 +109,15 @@ const logoutWhatsApp = async (libraryId) => {
         const client = clients.get(libraryId);
         if (client && readyStatuses.get(libraryId)) {
             await client.logout();
+            await client.destroy();
         }
     } catch (err) {
         console.error(`[Library ${libraryId}] Error logging out`, err);
     }
     readyStatuses.set(libraryId, false);
     qrCodes.set(libraryId, '');
-    
-    // Reinitialize to get a new QR code
-    const client = clients.get(libraryId);
-    if (client) {
-        client.initialize();
-    }
+    clients.delete(libraryId);
+    initializingSet.delete(libraryId);
 };
 
 const sendWhatsAppMessage = async (libraryId, to, message) => {
@@ -181,4 +208,4 @@ const initCronJobs = () => {
   });
 };
 
-module.exports = { sendWhatsAppMessage, initCronJobs, getWhatsAppStatus, logoutWhatsApp };
+module.exports = { sendWhatsAppMessage, initCronJobs, getWhatsAppStatus, logoutWhatsApp, connectWhatsApp };

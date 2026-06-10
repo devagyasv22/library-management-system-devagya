@@ -38,4 +38,4 @@ RUN mkdir -p .wwebjs_auth
 
 EXPOSE 5001
 
-CMD ["node", "index.js"]
+CMD ["node", "--max-old-space-size=400", "index.js"]

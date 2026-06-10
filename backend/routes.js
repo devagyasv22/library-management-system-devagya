@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const { Admin, User, Library, Attendance, Payment } = require('./models');
-const { sendWhatsAppMessage, getWhatsAppStatus, logoutWhatsApp } = require('./whatsapp');
+const { sendWhatsAppMessage, getWhatsAppStatus, logoutWhatsApp, connectWhatsApp } = require('./whatsapp');
 const upload = require('./upload');
 const router = express.Router();
 
@@ -198,6 +198,19 @@ router.post('/admin/whatsapp/reset', authMiddleware, async (req, res) => {
     }
     await logoutWhatsApp(req.libraryId.toString());
     res.json({ success: true, message: 'WhatsApp session cleared.' });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Explicit connect endpoint - only launches Chrome when admin clicks "Connect"
+router.post('/admin/whatsapp/connect', authMiddleware, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Only admins can connect WhatsApp' });
+    }
+    const status = await connectWhatsApp(req.libraryId.toString());
+    res.json(status);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
