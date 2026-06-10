@@ -15,7 +15,7 @@ export default function Login() {
   const handleRequestOtp = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://library-backend.onrender.com/api/admin/request-otp', { phone });
+      await axios.post('https://library-backend-1fhf.onrender.com/api/admin/request-otp', { phone });
       toast.success('OTP sent to WhatsApp');
       setStep(2);
     } catch (err) {
@@ -28,9 +28,9 @@ export default function Login() {
     try {
       let res;
       if (isLogin) {
-        res = await axios.post('https://library-backend.onrender.com/api/admin/login', { phone, otp });
+        res = await axios.post('https://library-backend-1fhf.onrender.com/api/admin/login', { phone, otp });
       } else {
-        res = await axios.post('https://library-backend.onrender.com/api/admin/signup', { phone, otp, name, libraryName });
+        res = await axios.post('https://library-backend-1fhf.onrender.com/api/admin/signup', { phone, otp, name, libraryName });
       }
       localStorage.setItem('adminToken', res.data.token);
       if (res.data.libraryId) localStorage.setItem('libraryId', res.data.libraryId);

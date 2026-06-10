@@ -11,7 +11,7 @@ export default function Settings() {
   useEffect(() => {
     const fetchConfig = async () => {
       try {
-        const res = await axios.get('https://library-backend.onrender.com/api/admin/dashboard', {
+        const res = await axios.get('https://library-backend-1fhf.onrender.com/api/admin/dashboard', {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.data.config) {
@@ -28,7 +28,7 @@ export default function Settings() {
     let intervalId;
     const fetchWhatsAppStatus = async () => {
       try {
-        const res = await axios.get('https://library-backend.onrender.com/api/admin/whatsapp/status', {
+        const res = await axios.get('https://library-backend-1fhf.onrender.com/api/admin/whatsapp/status', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setWhatsappStatus(res.data);
@@ -46,7 +46,7 @@ export default function Settings() {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://library-backend.onrender.com/api/admin/config', config, {
+      await axios.post('https://library-backend-1fhf.onrender.com/api/admin/config', config, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Settings saved successfully');
@@ -96,7 +96,7 @@ export default function Settings() {
 
   const handleWhatsAppLogout = async () => {
     try {
-      await axios.post('https://library-backend.onrender.com/api/admin/whatsapp/logout', {}, {
+      await axios.post('https://library-backend-1fhf.onrender.com/api/admin/whatsapp/logout', {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success("Disconnected from WhatsApp. A new QR will be generated.");
@@ -108,7 +108,7 @@ export default function Settings() {
 
   const handleWhatsAppReset = async () => {
     try {
-      await axios.post('https://library-backend.onrender.com/api/admin/whatsapp/reset', {}, {
+      await axios.post('https://library-backend-1fhf.onrender.com/api/admin/whatsapp/reset', {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success("Server is restarting to clear WhatsApp session. Please wait 10 seconds and refresh the page.");

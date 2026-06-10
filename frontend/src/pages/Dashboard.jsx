@@ -25,7 +25,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get('https://library-backend.onrender.com/api/admin/dashboard', {
+        const res = await axios.get('https://library-backend-1fhf.onrender.com/api/admin/dashboard', {
           headers: { Authorization: `Bearer ${token}` }
         });
         const allUsers = res.data.users || [];
@@ -46,7 +46,7 @@ export default function Dashboard() {
     fetchData();
 
     const libraryId = localStorage.getItem('libraryId');
-    const socket = io('https://library-backend.onrender.com');
+    const socket = io('https://library-backend-1fhf.onrender.com');
     if (libraryId) {
       socket.on(`attendanceUpdate_${libraryId}`, () => {
         console.log('Real-time attendance update received');
@@ -73,7 +73,7 @@ export default function Dashboard() {
 
   const handleViewHistory = async (userId) => {
     try {
-      const res = await axios.get(`https://library-backend.onrender.com/api/admin/users/${userId}/history`, {
+      const res = await axios.get(`https://library-backend-1fhf.onrender.com/api/admin/users/${userId}/history`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSelectedUserHistory(res.data);
@@ -86,13 +86,13 @@ export default function Dashboard() {
   const handleSaveMember = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`https://library-backend.onrender.com/api/admin/users/${editingUserId}`, formData, {
+      await axios.put(`https://library-backend-1fhf.onrender.com/api/admin/users/${editingUserId}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Member updated successfully');
       setShowModal(false);
       // Re-fetch data
-      const res = await axios.get('https://library-backend.onrender.com/api/admin/dashboard', { headers: { Authorization: `Bearer ${token}` } });
+      const res = await axios.get('https://library-backend-1fhf.onrender.com/api/admin/dashboard', { headers: { Authorization: `Bearer ${token}` } });
       const allUsers = res.data.users || [];
       setUsers(allUsers);
       setStats({
@@ -331,7 +331,7 @@ export default function Dashboard() {
                             ₹{p.amount}
                             {p.screenshotUrl && (
                               <button 
-                                onClick={() => setSelectedImage(`https://library-backend.onrender.com${p.screenshotUrl}`)}
+                                onClick={() => setSelectedImage(`https://library-backend-1fhf.onrender.com${p.screenshotUrl}`)}
                                 className="ml-3 text-indigo-600 hover:text-indigo-800 text-xs font-medium underline flex items-center"
                               >
                                 View Screenshot

@@ -22,7 +22,7 @@ export default function Members() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('https://library-backend.onrender.com/api/admin/dashboard', {
+      const res = await axios.get('https://library-backend-1fhf.onrender.com/api/admin/dashboard', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(res.data.users || []);
@@ -54,7 +54,7 @@ export default function Members() {
 
   const handleViewHistory = async (userId) => {
     try {
-      const res = await axios.get(`https://library-backend.onrender.com/api/admin/users/${userId}/history`, {
+      const res = await axios.get(`https://library-backend-1fhf.onrender.com/api/admin/users/${userId}/history`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSelectedUserHistory(res.data);
@@ -68,12 +68,12 @@ export default function Members() {
     e.preventDefault();
     try {
       if (editingUserId) {
-        await axios.put(`https://library-backend.onrender.com/api/admin/users/${editingUserId}`, formData, {
+        await axios.put(`https://library-backend-1fhf.onrender.com/api/admin/users/${editingUserId}`, formData, {
           headers: { Authorization: `Bearer ${token}` }
         });
         toast.success('Member updated successfully');
       } else {
-        await axios.post('https://library-backend.onrender.com/api/admin/users', formData, {
+        await axios.post('https://library-backend-1fhf.onrender.com/api/admin/users', formData, {
           headers: { Authorization: `Bearer ${token}` }
         });
         toast.success('Member added successfully');
@@ -89,7 +89,7 @@ export default function Members() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this member?')) return;
     try {
-      await axios.delete(`https://library-backend.onrender.com/api/admin/users/${id}`, {
+      await axios.delete(`https://library-backend-1fhf.onrender.com/api/admin/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Member deleted');
@@ -101,7 +101,7 @@ export default function Members() {
 
   const handleApprovePayment = async (id) => {
     try {
-      await axios.put(`https://library-backend.onrender.com/api/admin/users/${id}/payment`, {}, {
+      await axios.put(`https://library-backend-1fhf.onrender.com/api/admin/users/${id}/payment`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Payment approved and subscription extended!');
@@ -316,7 +316,7 @@ export default function Members() {
                             ₹{p.amount}
                             {p.screenshotUrl && (
                               <button 
-                                onClick={() => setSelectedImage(`https://library-backend.onrender.com${p.screenshotUrl}`)}
+                                onClick={() => setSelectedImage(`https://library-backend-1fhf.onrender.com${p.screenshotUrl}`)}
                                 className="ml-3 text-indigo-600 hover:text-indigo-800 text-xs font-medium underline flex items-center"
                               >
                                 View Screenshot

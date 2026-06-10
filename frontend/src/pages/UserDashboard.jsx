@@ -24,7 +24,7 @@ export default function UserDashboard() {
 
   const fetchProfile = async () => {
     try {
-      const res = await axios.get('https://library-backend.onrender.com/api/user/profile', {
+      const res = await axios.get('https://library-backend-1fhf.onrender.com/api/user/profile', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProfile(res.data);
@@ -38,7 +38,7 @@ export default function UserDashboard() {
 
   const fetchHistory = async () => {
     try {
-      const res = await axios.get('https://library-backend.onrender.com/api/user/history', {
+      const res = await axios.get('https://library-backend-1fhf.onrender.com/api/user/history', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setHistoryData(res.data);
@@ -60,7 +60,7 @@ export default function UserDashboard() {
     formData.append('screenshot', paymentForm.screenshot);
 
     try {
-      await axios.post('https://library-backend.onrender.com/api/user/payments', formData, {
+      await axios.post('https://library-backend-1fhf.onrender.com/api/user/payments', formData, {
         headers: { 
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -87,7 +87,7 @@ export default function UserDashboard() {
     navigator.geolocation.getCurrentPosition(async (position) => {
       try {
         const { latitude, longitude } = position.coords;
-        await axios.post('https://library-backend.onrender.com/api/user/attendance/check-in', 
+        await axios.post('https://library-backend-1fhf.onrender.com/api/user/attendance/check-in', 
           { latitude, longitude },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -101,7 +101,7 @@ export default function UserDashboard() {
         toast.loading("Hardware GPS failed. Fetching IP location...", { id: 'gps' });
         try {
           const ipRes = await axios.get('https://ipapi.co/json/');
-          await axios.post('https://library-backend.onrender.com/api/user/attendance/check-in', 
+          await axios.post('https://library-backend-1fhf.onrender.com/api/user/attendance/check-in', 
             { latitude: ipRes.data.latitude, longitude: ipRes.data.longitude },
             { headers: { Authorization: `Bearer ${token}` } }
           );
@@ -122,7 +122,7 @@ export default function UserDashboard() {
 
   const handleCheckOut = async () => {
     try {
-      await axios.post('https://library-backend.onrender.com/api/user/attendance/check-out', {}, {
+      await axios.post('https://library-backend-1fhf.onrender.com/api/user/attendance/check-out', {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Checked out successfully!');
@@ -238,7 +238,7 @@ export default function UserDashboard() {
                           ₹{payment.amount}
                           {payment.screenshotUrl && (
                             <button 
-                              onClick={() => setSelectedImage(`https://library-backend.onrender.com${payment.screenshotUrl}`)}
+                              onClick={() => setSelectedImage(`https://library-backend-1fhf.onrender.com${payment.screenshotUrl}`)}
                               className="ml-3 text-indigo-600 hover:text-indigo-800 text-xs font-medium underline flex items-center"
                             >
                               View Proof

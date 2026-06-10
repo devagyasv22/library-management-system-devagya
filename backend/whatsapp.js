@@ -2,6 +2,7 @@ const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const cron = require('node-cron');
 const { addDays } = require('date-fns');
+const os = require('os');
 const { Library, User, Attendance } = require('./models.js');
 
 const clients = new Map();
@@ -17,7 +18,7 @@ const initializeClient = (libraryId) => {
     const client = new Client({
         authStrategy: new LocalAuth({ clientId: libraryId.toString() }), 
         puppeteer: {
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || (os.platform() === 'darwin' ? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' : '/usr/bin/google-chrome-stable'),
             args: [
                 '--no-sandbox', 
                 '--disable-setuid-sandbox', 

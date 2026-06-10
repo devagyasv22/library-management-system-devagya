@@ -11,7 +11,7 @@ export default function Payments() {
 
   const fetchPayments = async () => {
     try {
-      const res = await axios.get('https://library-backend.onrender.com/api/admin/payments/pending', {
+      const res = await axios.get('https://library-backend-1fhf.onrender.com/api/admin/payments/pending', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setPayments(res.data);
@@ -28,7 +28,7 @@ export default function Payments() {
 
   const handleVerify = async (id, action) => {
     try {
-      await axios.post(`https://library-backend.onrender.com/api/admin/payments/${id}/verify`, { action }, {
+      await axios.post(`https://library-backend-1fhf.onrender.com/api/admin/payments/${id}/verify`, { action }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success(`Payment ${action}ed successfully`);
@@ -83,7 +83,7 @@ export default function Payments() {
                     </td>
                     <td className="p-4 text-right space-x-2">
                       <button 
-                        onClick={() => setSelectedImage(`https://library-backend.onrender.com${payment.screenshotUrl}`)}
+                        onClick={() => setSelectedImage(`https://library-backend-1fhf.onrender.com${payment.screenshotUrl}`)}
                         className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors inline-flex items-center"
                         title="View Screenshot"
                       >
