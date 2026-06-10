@@ -5,7 +5,8 @@ import { MapPin, QrCode, MessageCircle, LogOut } from 'lucide-react';
 
 export default function Settings() {
   const [config, setConfig] = useState({ latitude: '', longitude: '', radiusMeters: 50, upiId: '' });
-  const [whatsappStatus, setWhatsappStatus] = useState({ ready: false, qr: '' });
+  const [whatsappStatus, setWhatsappStatus] = useState({ ready: false, qr: '', initialized: false });
+  const [connecting, setConnecting] = useState(false);
   const token = localStorage.getItem('adminToken');
 
   useEffect(() => {
@@ -42,6 +43,21 @@ export default function Settings() {
 
     return () => clearInterval(intervalId);
   }, []);
+
+  const handleConnectWhatsApp = async () => {
+    setConnecting(true);
+    try {
+      const res = await axios.post('https://library-backend-1fhf.onrender.com/api/admin/whatsapp/connect', {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setWhatsappStatus(res.data);
+      toast.success('WhatsApp connecting... QR code will appear shortly.');
+    } catch (err) {
+      toast.error('Failed to start WhatsApp connection');
+    } finally {
+      setConnecting(false);
+    }
+  };
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -163,14 +179,24 @@ export default function Settings() {
             
             {!whatsappStatus.ready && (
               <div className="flex flex-col items-center gap-3">
-                <div className="w-48 h-48 bg-white border-2 border-dashed border-indigo-200 rounded-2xl flex items-center justify-center p-2 shadow-sm overflow-hidden shrink-0">
-                  {whatsappStatus.qr ? (
-                    <img src={`https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(whatsappStatus.qr)}&size=200x200`} alt="WhatsApp QR Code" className="w-full h-full object-contain" />
-                  ) : (
-                    <div className="text-slate-400 text-sm text-center font-medium animate-pulse">Generating<br/>QR Code...</div>
-                  )}
-                </div>
-                {!whatsappStatus.qr && (
+                {whatsappStatus.initialized ? (
+                  <div className="w-48 h-48 bg-white border-2 border-dashed border-indigo-200 rounded-2xl flex items-center justify-center p-2 shadow-sm overflow-hidden shrink-0">
+                    {whatsappStatus.qr ? (
+                      <img src={`https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(whatsappStatus.qr)}&size=200x200`} alt="WhatsApp QR Code" className="w-full h-full object-contain" />
+                    ) : (
+                      <div className="text-slate-400 text-sm text-center font-medium animate-pulse">Generating<br/>QR Code...</div>
+                    )}
+                  </div>
+                ) : (
+                  <button type="button" onClick={handleConnectWhatsApp} disabled={connecting} className="bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700 transition-colors shadow-lg disabled:opacity-50 flex items-center gap-2">
+                    {connecting ? (
+                      <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Connecting...</>
+                    ) : (
+                      <><MessageCircle size={18} /> Connect WhatsApp</>
+                    )}
+                  </button>
+                )}
+                {whatsappStatus.initialized && !whatsappStatus.qr && (
                   <button type="button" onClick={handleWhatsAppReset} className="text-xs text-red-500 hover:text-red-700 underline font-medium">
                     Stuck? Force Reset Connection
                   </button>
