@@ -151,8 +151,8 @@ export default function Members() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-slate-800">Members Directory</h2>
+      <div className="flex justify-between items-start">
+        <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Members Directory</h2>
         <button 
           onClick={openAddModal}
           className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium flex items-center space-x-2 hover:bg-indigo-700 transition-colors"
@@ -161,31 +161,31 @@ export default function Members() {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-        <div className="p-4 border-b border-slate-100 flex flex-col xl:flex-row gap-4 bg-slate-50 items-center justify-between">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-md border border-slate-200 dark:border-slate-800 overflow-hidden">
+                <div className="p-4 border-b border-slate-100 dark:border-slate-700 flex flex-col xl:flex-row gap-4 bg-slate-50 dark:bg-slate-800/50 items-center justify-between">
           <div className="relative flex-1 w-full xl:w-auto min-w-[250px]">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={20} />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500" size={20} />
             <input 
               type="text" 
               placeholder="Search by name or phone..." 
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
+              className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:placeholder-slate-500"
             />
           </div>
           <div className="flex flex-wrap gap-3 w-full xl:w-auto">
-            <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="p-2.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:ring-2 focus:ring-indigo-500 bg-white shadow-sm flex-1 min-w-[130px]">
+            <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="p-2.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:ring-2 focus:ring-indigo-500 bg-white shadow-sm flex-1 min-w-[130px] dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300">
               <option value="all">All Statuses</option>
               <option value="active">Active</option>
               <option value="pending_payment">Pending Payment</option>
               <option value="expired">Expired</option>
             </select>
-            <select value={filterAttendance} onChange={e => setFilterAttendance(e.target.value)} className="p-2.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:ring-2 focus:ring-indigo-500 bg-white shadow-sm flex-1 min-w-[130px]">
+            <select value={filterAttendance} onChange={e => setFilterAttendance(e.target.value)} className="p-2.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:ring-2 focus:ring-indigo-500 bg-white shadow-sm flex-1 min-w-[130px] dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300">
               <option value="all">All Attendance</option>
               <option value="present">Present Today</option>
               <option value="absent">Absent Today</option>
             </select>
-            <select value={sortOrder} onChange={e => setSortOrder(e.target.value)} className="p-2.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:ring-2 focus:ring-indigo-500 bg-white shadow-sm flex-1 min-w-[130px]">
+            <select value={sortOrder} onChange={e => setSortOrder(e.target.value)} className="p-2.5 border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:ring-2 focus:ring-indigo-500 bg-white shadow-sm flex-1 min-w-[130px] dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300">
               <option value="newest">Newest Members</option>
               <option value="oldest">Oldest Members</option>
               <option value="name_asc">Name (A-Z)</option>
@@ -195,8 +195,8 @@ export default function Members() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-left whitespace-nowrap">
-            <thead className="bg-slate-50 border-b border-slate-100">
-            <tr className="text-slate-500 text-sm">
+            <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 sticky top-0 z-10">
+           <tr className="text-slate-500 dark:text-slate-400 text-sm">
               <th className="px-6 py-4 font-medium">Name</th>
               <th className="px-6 py-4 font-medium">Phone</th>
               <th className="px-6 py-4 font-medium">Status</th>
@@ -204,36 +204,51 @@ export default function Members() {
               <th className="px-6 py-4 font-medium">Action</th>
             </tr>
           </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
               {filteredUsers.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-8 text-center text-slate-500">
-                    No members match your search or filter criteria.
-                  </td>
+                  <td colSpan="5" className="px-6 py-16 text-center">
+  <div className="flex flex-col items-center gap-2">
+    <users size={36} className="text-slate-300" />
+    <p className="text-slate-500 dark:text-slate-400 font-medium">No members found</p>
+    <p className="text-slate-400 dark:text-slate-500 text-sm">Try adjusting your search or filters</p>
+  </div>
+</td>
                 </tr>
               ) : (
                 filteredUsers.map(user => (
-                  <tr key={user._id} className="hover:bg-slate-50 transition-colors">
-                <td className="px-6 py-4 font-medium text-slate-800">
+                  <tr
+                  key={user._id}
+                  className="hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-all duration-200 cursor-pointer">
+                <td className="px-6 py-4 font-medium text-slate-800 dark:text-white">
                   {user.name}
-                  {user.isPremium && <span className="ml-2 text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">Premium</span>}
+                  {user.isPremium && <span className="ml-2 text-xs bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400 px-2 py-0.5 rounded-full">Premium</span>}
                 </td>
-                <td className="px-6 py-4 text-slate-600">{user.phone}</td>
+                <td className="px-6 py-4 text-slate-600 dark:text-slate-400">{user.phone}</td>
                 <td className="px-6 py-4">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    user.status === 'active' ? 'bg-green-100 text-green-700' :
-                    user.status === 'pending_payment' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'
-                  }`}>
-                    {user.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-slate-600">
+  <span
+    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+      user.status === 'active'
+        ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400'
+        : user.status === 'pending_payment'
+        ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400'
+        : 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400'
+    }`}
+  >
+    {user.status === 'active'
+      ? 'Active'
+      : user.status === 'pending_payment'
+      ? 'Pending Payment'
+      : 'Expired'}
+  </span>
+</td>
+                <td className="px-6 py-4 text-slate-600 dark:text-slate-400">
                   {new Date(user.subscriptionEndDate).toLocaleDateString()}
                 </td>
                 <td className="px-6 py-4 flex items-center space-x-2">
-                  <button onClick={() => handleViewHistory(user._id)} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="View History"><History size={18} /></button>
-                  <button onClick={() => handleEdit(user)} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"><Edit2 size={18} /></button>
-                  <button onClick={() => handleDelete(user._id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"><Trash2 size={18} /></button>
+                  <button onClick={() => handleViewHistory(user._id)} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors dark:text-indigo-400 dark:hover:bg-indigo-950/30" title="View History"><History size={18} /></button>
+                  <button onClick={() => handleEdit(user)} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors dark:text-indigo-400 dark:hover:bg-indigo-950/30"><Edit2 size={18} /></button>
+                  <button onClick={() => handleDelete(user._id)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors dark:text-red-400 dark:hover:bg-red-950/30"><Trash2 size={18} /></button>
                   {user.status === 'pending_payment' && (
                     <button 
                       onClick={() => handleApprovePayment(user._id)}
@@ -252,31 +267,36 @@ export default function Members() {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-8 w-full max-w-md">
-            <h3 className="text-xl font-bold mb-6">{editingUserId ? 'Edit Member' : 'Add New Member'}</h3>
-            <form onSubmit={handleSaveMember} className="space-y-4">
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-slate-900 rounded-xl p-8 w-full max-w-md">
+          <div className="flex justify-between items-center mb-6">
+  <h3 className="text-xl font-bold dark:text-white">{editingUserId ? 'Edit Member' : 'Add New Member'}</h3>
+  <button onClick={() => setShowModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors dark:text-slate-500 dark:hover:text-slate-300">
+    <X size={20} />
+  </button>
+</div>            
+<form onSubmit={handleSaveMember} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Name</label>
-                <input required type="text" className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Name</label>
+                <input required type="text" className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">User Phone (WhatsApp)</label>
-                <input required type="text" className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">User Phone (WhatsApp)</label>
+                <input required type="text" className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white" value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Parent Phone (For Reports)</label>
-                <input type="text" className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" value={formData.parentPhone} onChange={e => setFormData({...formData, parentPhone: e.target.value})} />
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Parent Phone (For Reports)</label>
+                <input type="text" className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white" value={formData.parentPhone} onChange={e => setFormData({...formData, parentPhone: e.target.value})} />
               </div>
               {editingUserId && (
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Valid Till</label>
-                  <input type="date" className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none" value={formData.subscriptionEndDate} onChange={e => setFormData({...formData, subscriptionEndDate: e.target.value})} />
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Valid Till</label>
+                  <input type="date" className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:bg-slate-800 dark:border-slate-700 dark:text-white" value={formData.subscriptionEndDate} onChange={e => setFormData({...formData, subscriptionEndDate: e.target.value})} />
                 </div>
               )}
               <div className="flex items-center space-x-2">
                 <input type="checkbox" id="premium" checked={formData.isPremium} onChange={e => setFormData({...formData, isPremium: e.target.checked})} />
-                <label htmlFor="premium" className="text-sm font-medium text-slate-700">Premium Member</label>
+                <label htmlFor="premium" className="text-sm font-medium text-slate-700 dark:text-slate-300">Premium Member</label>
               </div>
               <div className="pt-4 flex justify-end">
                 <button type="submit" className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-indigo-700 transition-colors">
@@ -291,28 +311,28 @@ export default function Members() {
       {/* History Modal */}
       {showHistoryModal && selectedUserHistory && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] shadow-2xl flex flex-col overflow-hidden">
-            <div className="flex justify-between items-center p-6 border-b border-slate-100 bg-slate-50">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-2xl max-h-[90vh] shadow-2xl flex flex-col overflow-hidden">
+            <div className="flex justify-between items-center p-6 border-b border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
               <div>
-                <h3 className="text-xl font-bold text-slate-800">{selectedUserHistory.user.name}'s History</h3>
-                <p className="text-sm text-slate-500">{selectedUserHistory.user.phone}</p>
+                <h3 className="text-xl font-bold text-slate-800 dark:text-white">{selectedUserHistory.user.name}'s History</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{selectedUserHistory.user.phone}</p>
               </div>
-              <button onClick={() => setShowHistoryModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
+              <button onClick={() => setShowHistoryModal(false)} className="text-slate-400 hover:text-slate-600 transition-colors dark:text-slate-500 dark:hover:text-slate-300">
                 <X size={24} />
               </button>
             </div>
             
             <div className="p-6 overflow-y-auto flex-1 space-y-8">
               <div>
-                <h4 className="text-lg font-bold text-slate-800 border-b pb-2 mb-4">Payment History</h4>
+                <h4 className="text-lg font-bold text-slate-800 dark:text-white border-b dark:border-slate-700 pb-2 mb-4">Payment History</h4>
                 {selectedUserHistory.payments.length === 0 ? (
-                  <p className="text-slate-500 text-sm">No payment records found.</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm">No payment records found.</p>
                 ) : (
                   <div className="space-y-3">
                     {selectedUserHistory.payments.map(p => (
-                      <div key={p._id} className="flex justify-between items-center bg-slate-50 p-3 rounded-lg border border-slate-100">
+                      <div key={p._id} className="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-3 rounded-lg border border-slate-100 dark:border-slate-700">
                         <div>
-                          <div className="font-bold text-slate-800 flex items-center">
+                          <div className="font-bold text-slate-800 dark:text-white flex items-center">
                             ₹{p.amount}
                             {p.screenshotUrl && (
                               <button 
@@ -323,13 +343,13 @@ export default function Members() {
                               </button>
                             )}
                           </div>
-                          <div className="text-xs text-slate-500 mt-1">UTR: {p.utrNumber}</div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">UTR: {p.utrNumber}</div>
                         </div>
                         <div className="text-right">
                           <span className={`text-xs font-bold px-2 py-1 rounded-full ${p.status === 'verified' ? 'bg-green-100 text-green-700' : p.status === 'rejected' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}`}>
                             {p.status.toUpperCase()}
                           </span>
-                          <div className="text-xs text-slate-400 mt-1">{new Date(p.createdAt).toLocaleDateString()}</div>
+                          <div className="text-xs text-slate-400 dark:text-slate-500 mt-1">{new Date(p.createdAt).toLocaleDateString()}</div>
                         </div>
                       </div>
                     ))}
@@ -338,20 +358,20 @@ export default function Members() {
               </div>
 
               <div>
-                <h4 className="text-lg font-bold text-slate-800 border-b pb-2 mb-4">Attendance Log</h4>
+                <h4 className="text-lg font-bold text-slate-800 dark:text-white border-b dark:border-slate-700 pb-2 mb-4">Attendance Log</h4>
                 {selectedUserHistory.attendance.length === 0 ? (
-                  <p className="text-slate-500 text-sm">No attendance records found.</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm">No attendance records found.</p>
                 ) : (
                   <div className="space-y-3">
                     {selectedUserHistory.attendance.map(a => (
-                      <div key={a._id} className="flex justify-between items-center bg-slate-50 p-3 rounded-lg border border-slate-100">
+                      <div key={a._id} className="flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-3 rounded-lg border border-slate-100 dark:border-slate-700">
                         <div>
-                          <div className="font-medium text-slate-800">{new Date(a.date).toLocaleDateString()}</div>
-                          <div className="text-xs text-slate-500 mt-1">
+                          <div className="font-medium text-slate-800 dark:text-white">{new Date(a.date).toLocaleDateString()}</div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                             {a.checkInTime ? new Date(a.checkInTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--'} to {a.checkOutTime ? new Date(a.checkOutTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--'}
                           </div>
                         </div>
-                        <div className="text-sm font-bold text-indigo-600">{a.totalMinutes} min</div>
+                        <div className="text-sm font-bold text-indigo-600 dark:text-indigo-400">{a.totalMinutes} min</div>
                       </div>
                     ))}
                   </div>
@@ -365,7 +385,7 @@ export default function Members() {
       {/* Image Viewer Modal */}
       {selectedImage && (
         <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 z-[60]" onClick={() => setSelectedImage(null)}>
-          <div className="relative max-w-4xl w-full bg-white rounded-xl shadow-2xl p-2 overflow-hidden" onClick={e => e.stopPropagation()}>
+          <div className="relative max-w-4xl w-full bg-white dark:bg-slate-900 rounded-xl shadow-2xl p-2 overflow-hidden" onClick={e => e.stopPropagation()}>
             <button 
               onClick={() => setSelectedImage(null)}
               className="absolute top-4 right-4 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors shadow-lg z-10"

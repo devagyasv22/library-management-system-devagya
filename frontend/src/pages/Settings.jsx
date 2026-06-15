@@ -136,27 +136,27 @@ export default function Settings() {
 
   return (
     <div className="max-w-3xl space-y-6">
-      <h2 className="text-2xl font-bold text-slate-800">Library Settings</h2>
+      <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Library Settings</h2>
       
-      <form onSubmit={handleSave} className="bg-white rounded-xl shadow-sm border border-slate-100 p-8 space-y-8">
+      <form onSubmit={handleSave} className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 p-8 space-y-8">
         
         {/* WhatsApp Integration */}
         <div className="space-y-4">
-          <div className="flex items-center space-x-2 text-indigo-600 font-bold text-lg border-b pb-2">
+          <div className="flex items-center space-x-2 text-indigo-600 dark:text-indigo-400 font-bold text-lg border-b dark:border-slate-700 pb-2">
             <MessageCircle size={24} /> <span>WhatsApp Automation</span>
           </div>
-          <p className="text-sm text-slate-500 mb-4">Connect your WhatsApp number to automatically send attendance reports and payment reminders.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">Connect your WhatsApp number to automatically send attendance reports and payment reminders.</p>
           
-          <div className="bg-slate-50 p-6 rounded-xl border border-slate-100 flex flex-col md:flex-row items-center gap-8">
+          <div className="bg-slate-50 dark:bg-slate-800 p-6 rounded-xl border border-slate-100 dark:border-slate-700 flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1 space-y-3">
-              <h4 className="font-bold text-slate-800 text-lg">Connection Status</h4>
+              <h4 className="font-bold text-slate-800 dark:text-white text-lg">Connection Status</h4>
               {whatsappStatus.ready ? (
                 <div className="space-y-4">
                   <div className="inline-flex items-center text-green-700 bg-green-100 px-3 py-1.5 rounded-full font-bold text-sm shadow-sm">
                     <div className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></div>
                     Connected & Ready to Send
                   </div>
-                  <p className="text-sm text-slate-600">Your number is linked. Automated messages will be sent from this account.</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Your number is linked. Automated messages will be sent from this account.</p>
                   <button type="button" onClick={handleWhatsAppLogout} className="text-red-600 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg font-medium text-sm transition-colors flex items-center">
                     <LogOut size={16} className="mr-2" /> Disconnect Number
                   </button>
@@ -167,7 +167,7 @@ export default function Settings() {
                     <div className="w-2 h-2 rounded-full bg-amber-500 mr-2 animate-pulse"></div>
                     Waiting for Scan...
                   </div>
-                  <ul className="text-sm text-slate-600 list-decimal pl-4 space-y-1 mt-2">
+                  <ul className="text-sm text-slate-600 dark:text-slate-400 list-decimal pl-4 space-y-1 mt-2">
                     <li>Open WhatsApp on your phone</li>
                     <li>Tap Menu ⋮ or Settings ⚙️</li>
                     <li>Tap <b>Linked Devices</b></li>
@@ -180,11 +180,11 @@ export default function Settings() {
             {!whatsappStatus.ready && (
               <div className="flex flex-col items-center gap-3">
                 {whatsappStatus.initialized ? (
-                  <div className="w-48 h-48 bg-white border-2 border-dashed border-indigo-200 rounded-2xl flex items-center justify-center p-2 shadow-sm overflow-hidden shrink-0">
+                  <div className="w-48 h-48 bg-white border-2 border-dashed border-indigo-200 dark:border-indigo-700 rounded-2xl flex items-center justify-center p-2 shadow-sm overflow-hidden shrink-0">
                     {whatsappStatus.qr ? (
                       <img src={`https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(whatsappStatus.qr)}&size=200x200`} alt="WhatsApp QR Code" className="w-full h-full object-contain" />
                     ) : (
-                      <div className="text-slate-400 text-sm text-center font-medium animate-pulse">Generating<br/>QR Code...</div>
+                      <div className="text-slate-400 dark:text-slate-500 text-sm text-center font-medium animate-pulse">Generating<br/>QR Code...</div>
                     )}
                   </div>
                 ) : (
@@ -208,45 +208,45 @@ export default function Settings() {
 
         {/* Geofencing Settings */}
         <div className="space-y-4 pt-6">
-          <div className="flex items-center space-x-2 text-indigo-600 font-bold text-lg border-b pb-2">
+          <div className="flex items-center space-x-2 text-indigo-600 dark:text-indigo-400 font-bold text-lg border-b dark:border-slate-700 pb-2">
             <MapPin size={24} /> <span>Geofencing & Location</span>
           </div>
-          <p className="text-sm text-slate-500 mb-4">Set the physical coordinates of your library to allow user check-ins.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">Set the physical coordinates of your library to allow user check-ins.</p>
           
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Latitude</label>
-              <input type="number" step="any" value={config.latitude} onChange={e => setConfig({...config, latitude: e.target.value})} className="w-full border rounded-lg p-2" required />
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Latitude</label>
+              <input type="number" step="any" value={config.latitude} onChange={e => setConfig({...config, latitude: e.target.value})} className="w-full border rounded-lg p-2 dark:bg-slate-800 dark:border-slate-700 dark:text-white" required />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Longitude</label>
-              <input type="number" step="any" value={config.longitude} onChange={e => setConfig({...config, longitude: e.target.value})} className="w-full border rounded-lg p-2" required />
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Longitude</label>
+              <input type="number" step="any" value={config.longitude} onChange={e => setConfig({...config, longitude: e.target.value})} className="w-full border rounded-lg p-2 dark:bg-slate-800 dark:border-slate-700 dark:text-white" required />
             </div>
           </div>
           
           <div className="flex space-x-4 pt-2">
-            <button type="button" onClick={handleGetLocation} className="bg-slate-100 text-slate-700 px-4 py-2 rounded-lg font-medium hover:bg-slate-200 transition-colors">
+            <button type="button" onClick={handleGetLocation} className="bg-slate-100 text-slate-700 px-4 py-2 rounded-lg font-medium hover:bg-slate-200 transition-colors dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700">
               Use My Current Location
             </button>
           </div>
 
           <div className="pt-2">
-            <label className="block text-sm font-medium text-slate-700 mb-1">Allowed Radius (meters)</label>
-            <input type="number" value={config.radiusMeters} onChange={e => setConfig({...config, radiusMeters: e.target.value})} className="w-full md:w-1/2 border rounded-lg p-2" required />
-            <p className="text-xs text-slate-500 mt-1">Users must be within this distance to check in.</p>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Allowed Radius (meters)</label>
+            <input type="number" value={config.radiusMeters} onChange={e => setConfig({...config, radiusMeters: e.target.value})} className="w-full md:w-1/2 border rounded-lg p-2 dark:bg-slate-800 dark:border-slate-700 dark:text-white" required />
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Users must be within this distance to check in.</p>
           </div>
         </div>
 
         {/* Payment Settings */}
         <div className="space-y-4 pt-6">
-          <div className="flex items-center space-x-2 text-indigo-600 font-bold text-lg border-b pb-2">
+          <div className="flex items-center space-x-2 text-indigo-600 dark:text-indigo-400 font-bold text-lg border-b dark:border-slate-700 pb-2">
             <QrCode size={24} /> <span>Payment Configuration</span>
           </div>
-          <p className="text-sm text-slate-500 mb-4">This UPI ID will be sent to users in payment reminders.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">This UPI ID will be sent to users in payment reminders.</p>
           
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">UPI ID</label>
-            <input type="text" value={config.upiId} onChange={e => setConfig({...config, upiId: e.target.value})} placeholder="example@upi" className="w-full md:w-1/2 border rounded-lg p-2" />
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">UPI ID</label>
+            <input type="text" value={config.upiId} onChange={e => setConfig({...config, upiId: e.target.value})} placeholder="example@upi" className="w-full md:w-1/2 border rounded-lg p-2 dark:bg-slate-800 dark:border-slate-700 dark:text-white" />
           </div>
         </div>
 
